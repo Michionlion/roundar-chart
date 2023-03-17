@@ -1,0 +1,42 @@
+{
+    "name": "roundar-chart",
+    "description": "A reusable rounded radar chart for the web.",
+    "version": "1.0.0",
+    "browser": "dist/index.min.js",
+    "types": "dist/index.d.ts",
+    "files": [
+        "/dist/*"
+    ],
+    "keywords": [
+        "svg",
+        "radar",
+        "chart",
+        "dataviz",
+        "visualization"
+    ],
+    "author": "Saejin Heinert <saejinmh@gmail.com>",
+    "homepage": "http://michionlion.github.io/roundar-chart/",
+    "repository": "https://github.com/michionlion/roundar-chart",
+    "bugs": "https://github.com/michionlion/roundar-chart/issues",
+    "license": "MIT",
+    "dependencies": {
+        "d3-shape": "^1.3.7"
+    },
+    "devDependencies": {
+        "@types/d3-shape": "^3.1.1",
+        "@typescript-eslint/eslint-plugin": "^5.55.0",
+        "@typescript-eslint/parser": "^5.55.0",
+        "esbuild": "^0.17.12",
+        "eslint": "^8.36.0",
+        "prettier": "^2.8.4",
+        "typescript": "^5.0.2"
+    },
+    "scripts": {
+        "lint": "prettier -cu src/ && eslint 'src/**/*.ts'",
+        "fix": "prettier -w src/ && eslint 'src/**/*.ts' --fix",
+        "compile": "yarn clean && tsc && yarn lint",
+        "minify": "esbuild dist/*.js --bundle --minify --outfile=dist/index.min.js",
+        "clean": "rm -rf dist",
+        "build": "yarn fix && yarn compile && yarn minify"
+    }
+}
