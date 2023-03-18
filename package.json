@@ -1,7 +1,7 @@
 {
     "name": "roundar-chart",
     "description": "A reusable rounded radar chart for the web.",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "browser": "dist/index.min.js",
     "types": "dist/index.d.ts",
     "files": [
