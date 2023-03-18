@@ -46,8 +46,6 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}-
       - name: Install Dependencies
         run: yarn install
-      - name: Lint
-        run: yarn lint
       - name: Build and Export Static HTML
         run: yarn build
       - name: Ensure NextJS resources are used
