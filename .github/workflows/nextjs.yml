@@ -39,7 +39,7 @@ jobs:
           #
           # You may remove this line if you want to manage the configuration yourself.
           static_site_generator: next
-      - name: Restore cache
+      - name: Restore Cache
         uses: actions/cache@v3
         with:
           path: |
@@ -49,13 +49,13 @@ jobs:
           # If source files changed but packages didn't, rebuild from a prior cache.
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}-
-      - name: Install dependencies
+      - name: Install Dependencies
         run: yarn install
-      - name: Build with Next.js
-        run: yarn next build
-      - name: Static HTML export with Next.js
-        run: yarn next export
-      - name: Upload artifact
+      - name: Build
+        run: yarn build
+      - name: Export Static HTML
+        run: yarn export
+      - name: Upload Artifact
         uses: actions/upload-pages-artifact@v1
         with:
           path: ./out
