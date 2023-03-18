@@ -34,14 +34,6 @@ jobs:
         with:
           node-version: "16"
           cache: yarn
-      - name: Setup Pages
-        uses: actions/configure-pages@v3
-        with:
-          # Automatically inject basePath in your Next.js configuration file and disable
-          # server side image optimization (https://nextjs.org/docs/api-reference/next/image#unoptimized).
-          #
-          # You may remove this line if you want to manage the configuration yourself.
-          static_site_generator: next
       - name: Restore Cache
         uses: actions/cache@v3
         with:
@@ -58,6 +50,8 @@ jobs:
         run: yarn lint
       - name: Build and Export Static HTML
         run: yarn build
+      - name: Ensure NextJS resources are used
+        run: touch out/.nojekyll
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v1
         with:
