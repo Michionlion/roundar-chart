@@ -17,11 +17,6 @@
   font-size: 9pt;
 }
 
-.example {
-  display: flex;
-  flex-direction: column;
-}
-
 .chart {
   width: 512px;
   height: 512px;
@@ -32,13 +27,18 @@
 }
 
 .code {
-  margin: 6px;
-  padding: 3px;
+  /* margin: 6px; */
+  /* padding: 3px; */
 
-  font-family: monospace;
-  cursor: text;
+  font-family: ui-monospace,
+    SFMono-Regular,
+    SF Mono,
+    Consolas,
+    Liberation Mono,
+    Menlo,
+    monospace;
 
+  background-color: rgb(235, 235, 235);
   border: 1px solid rgb(145, 153, 159);
   border-radius: 4px;
-  background: rgb(235, 235, 235);
 }

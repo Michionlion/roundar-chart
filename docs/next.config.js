@@ -5,8 +5,8 @@ const repo = 'roundar-chart';
 const nextConfig = {
   reactStrictMode: true,
   output: 'export',
-  assetPrefix: `/${repo}/`,
-  basePath: `/${repo}`,
+  // assetPrefix: `/${repo}/`,
+  // basePath: `/${repo}`,
   images: {
     unoptimized: true,
   }

@@ -31,7 +31,7 @@ export function smoothingPathMaker(points: Array<[number, number]>): string {
   return line().curve(curveCardinalClosed.tension(1.0))(points) || 'error';
 }
 
-function createSVGElement(
+export function createSVGElement(
   tag: string,
   attrs: {[key: string]: string | number} = {},
   ...children: Array<Node | string>
@@ -118,7 +118,7 @@ function caption(
   );
 }
 
-interface Options {
+export interface Options {
   size: number;
   axes: boolean;
   scales: number;
