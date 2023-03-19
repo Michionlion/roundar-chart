@@ -50,7 +50,7 @@ export function createSVGElement(
 
 function axis(chartRadius: number, angle: number) {
   return createSVGElement('polyline', {
-    className: 'axis',
+    class: 'axis',
     points: points([
       [0, 0],
       [polarToX(angle, chartRadius), polarToY(angle, chartRadius)],
@@ -65,7 +65,7 @@ function shape(
   pathMaker: (points: Array<[number, number]>) => string
 ): SVGElement {
   return createSVGElement('path', {
-    className: 'shape',
+    class: 'shape',
     d: pathMaker(
       columns.map((column: {key: string; angle: number}) => {
         const val = dataset[column.key];
@@ -84,7 +84,7 @@ function shape(
 
 function scale(chartRadius: number, value: number) {
   return createSVGElement('circle', {
-    className: 'scale',
+    class: 'scale',
     fill: 'none',
     cx: 0,
     cy: 0,
@@ -165,7 +165,7 @@ export default function roundar(
     groups.push(
       createSVGElement(
         'g',
-        {className: 'captions'},
+        {class: 'captions'},
         ...columns.map((col) =>
           caption(col.caption, chartRadius, col.angle, opt.captionFontSize)
         )
@@ -177,7 +177,7 @@ export default function roundar(
     groups.unshift(
       createSVGElement(
         'g',
-        {className: 'axes'},
+        {class: 'axes'},
         ...columns.map((col) => axis(chartRadius, col.angle))
       )
     );
@@ -186,14 +186,14 @@ export default function roundar(
     for (let i = opt.scales; i > 0; i--) {
       scales.push(scale(chartRadius, i / opt.scales));
     }
-    groups.unshift(createSVGElement('g', {className: 'scales'}, ...scales));
+    groups.unshift(createSVGElement('g', {class: 'scales'}, ...scales));
   }
 
   const delta = (opt.size / 2).toFixed(4);
   return createSVGElement(
     'g',
     {
-      className: 'chart',
+      class: 'chart',
       transform: `translate(${delta},${delta})`,
     },
     ...groups

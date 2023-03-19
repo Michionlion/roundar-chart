@@ -2,7 +2,7 @@
 
 **Generate SVG radar charts.**
 
-This library is inspired by [svg-radar-chart](https://github.com/derhuerst/svg-radar-chart). It uses a similar implementation philosophy, but in Typescript and using browser DOM manipulation to build the SVG element. It's designed for use in frontend components to easily generate a `<g>` for use in any `<svg>` element you may want. It weighs `7.0k` and requires no outside dependencies.
+This library is inspired by [svg-radar-chart](https://github.com/derhuerst/svg-radar-chart). It uses a similar implementation philosophy, but in Typescript and using browser DOM manipulation to build the SVG element. It's designed for use in frontend components to easily generate a `<g>` for use in any `<svg>` element you may want. It weighs `6.9k` and requires no outside dependencies.
 
 ## Installing
 
