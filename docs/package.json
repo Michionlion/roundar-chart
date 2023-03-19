@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build-library": "cd .. && yarn build",
-    "build": "yarn build-library && next build && next export"
+    "build": "next build && next export"
   },
   "dependencies": {
     "@types/node": "18.15.3",
