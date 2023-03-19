@@ -35,8 +35,9 @@
         "lint": "prettier -cu src/ && eslint 'src/**/*.ts'",
         "fix": "prettier -w src/ && eslint 'src/**/*.ts' --fix",
         "type": "yarn clean && tsc --noEmit && yarn lint",
+        "declarations": "tsc --emitDeclarationOnly",
         "package": "esbuild src/index.ts --outdir=dist --sourcemap --minify --bundle --format=esm --target=chrome58,firefox57,safari11,edge16",
         "clean": "rm -rf dist",
-        "build": "yarn fix && yarn type && yarn package"
+        "build": "yarn fix && yarn type && yarn package && yarn declarations"
     }
 }

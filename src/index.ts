@@ -124,6 +124,17 @@ function caption(
 }
 
 export interface Options {
+  size?: number;
+  axes?: boolean;
+  scales?: number;
+  captions?: boolean;
+  captionsPosition?: number;
+  padding?: number;
+  captionFontSize?: number;
+  pathMaker?: (points: Array<[number, number]>) => string;
+}
+
+interface DefaultedOptions {
   size: number;
   axes: boolean;
   scales: number;
@@ -134,7 +145,7 @@ export interface Options {
   pathMaker: (points: Array<[number, number]>) => string;
 }
 
-const defaults: Options = {
+const defaults: DefaultedOptions = {
   size: 100, // size of the chart (including captions)
   axes: true, // show axes?
   scales: 3, // show scale circles?
@@ -155,18 +166,18 @@ const defaults: Options = {
  * @export
  * @param {{ [key: string]: string }} axes a map from column key to column caption
  * @param {Array<{ [key: string]: number }>} dataset a list of objects, each a map from column key to value (between 0 and 1)
- * @param {Options} [opt=defaults] options for the chart
+ * @param {Options} [options=defaults] options for the chart
  * @return {SVGElement} a <g> element containing the chart
  */
 export default function roundar(
   axes: {[key: string]: string},
   dataset: Array<{[key: string]: number | string}>,
-  opt: Options = defaults
+  options: Options = defaults
 ): SVGElement {
   if (!Array.isArray(dataset)) {
     throw new Error('Dataset must be an array.');
   }
-  opt = Object.assign({}, defaults, opt);
+  const opt = Object.assign({}, defaults, options) as DefaultedOptions;
 
   const chartSize = opt.size / opt.captionsPosition - opt.padding * 2;
   const chartRadius = chartSize / 2;

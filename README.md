@@ -65,7 +65,7 @@ const svgElement = `
 function roundar(
   axes: {[key: string]: string},
   dataset: Array<{[key: string]: number | string}>,
-  opt: Options = defaults
+  options: Options = defaults
 ): SVGElement
 ```
 
@@ -76,7 +76,7 @@ function roundar(
 `opt` is an optional options object and has the following default values:
 
 ```typescript
-const defaults: Options = {
+const defaults = {
   size: 100, // size of the chart (including captions)
   axes: true, // show axes?
   scales: 3, // show scale circles?
