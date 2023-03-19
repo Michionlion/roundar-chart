@@ -73,7 +73,7 @@ function roundar(
 
 `dataset` must be a list of data points. Each data point must be an object with keys that must match column identifiers from `axes`. Any extra keys in that object are added as attributes to the shape's `<path>` element.
 
-`opt` is an optional options object and has the following default values:
+`options` is an optional options object and has the following default values:
 
 ```typescript
 const defaults = {
