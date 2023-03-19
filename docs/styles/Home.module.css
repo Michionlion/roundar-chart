@@ -1,44 +1,108 @@
-.main {
+.header {
   display: flex;
-  flex-direction: column;
-  margin: auto;
-  align-items: center;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+  width: 100%;
+  align-items: stretch;
+  justify-content: center;
 }
 
-.title {
-  margin-bottom: 0;
-}
-
-.subtitle {
-  margin-top: -5px;
-  font-size: 9pt;
-}
-
-.chart {
-  width: 512px;
-  height: 512px;
-  background: rgb(235, 235, 235);
-  border: 1px solid rgb(145, 153, 159);
-  border-radius: 10%;
+.logo {
+  width: 64px;
+  height: 64px;
+  /* background: rgb(235, 235, 235); */
+  /* border: 1px solid rgb(145, 153, 159); */
+  border-radius: 50%;
   margin: 6px;
 }
 
-.code {
-  /* margin: 6px; */
-  /* padding: 3px; */
+.title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+  font-family: Menlo, monospace;
+  letter-spacing: -0.025rem;
+}
 
-  font-family: ui-monospace,
-    SFMono-Regular,
-    SF Mono,
-    Consolas,
-    Liberation Mono,
-    Menlo,
-    monospace;
+.title h1 {
+  margin: 0.75rem;
+  padding: -0.25rem;
+  font-size: 18pt;
+}
+
+.title sub {
+  margin: 0.75rem;
+  margin-top: -0.5rem;
+  font-size: 9pt;
+}
+
+.main {
+  display: flex;
+  flex-wrap: wrap;
+  margin: auto;
+  align-items: center;
+  justify-items: center;
+  justify-content: center;
+}
+
+.chart {
+  width: max(50vh, 50vw);
+  height: max(50vh, 50vw);
+  max-width: min(65vh, 80vw);
+  max-height: min(65vh, 80vw);
+  background: rgb(235, 235, 235);
+  border-radius: 25px;
+  margin: 6px;
+}
+
+.editor {
+  margin: 6px;
+  padding: 4px;
+
+  word-wrap: none;
+  word-break: keep-all;
+  white-space: pre;
+  overflow: scroll;
+  resize: vertical;
+
+  width: 59ch;
+  height: calc(min(65vh, 80vw) - 10px - 16ch);
+  max-height: calc(min(65vh, 80vw) - 10px);
+  min-height: 8ch;
+
+  font-family: Menlo, monospace;
 
   background-color: rgb(235, 235, 235);
-  border: 1px solid rgb(145, 153, 159);
+  border: 1px solid transparent;
   border-radius: 4px;
+  font-size: 7pt;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin: 1rem;
+}
+
+.footer a {
+  cursor: pointer;
+}
+
+.footer svg {
+  width: 2rem;
+  height: 2rem;
+  fill: black;
+  background-color: transparent;
+  border-radius: 50%;
+  transition: 150ms ease-in-out;
+  transition-property: margin-bottom;
+}
+
+.footer svg:hover {
+  fill: rgb(26, 26, 26);
+  margin-bottom: 0.125rem;
+  background-color: rgba(25, 175, 255, 0.15);
+  box-shadow: 0 0 8px rgba(25, 175, 255, 0.3);
+  /* border-bottom: 2px solid rgba(26, 26, 26, 0.9); */
 }
