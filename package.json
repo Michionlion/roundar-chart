@@ -2,7 +2,7 @@
     "name": "roundar-chart",
     "description": "A reusable rounded radar chart for the web.",
     "version": "0.1.0",
-    "browser": "dist/index.min.js",
+    "browser": "dist/index.js",
     "types": "dist/index.d.ts",
     "files": [
         "/dist/*"
@@ -34,9 +34,9 @@
     "scripts": {
         "lint": "prettier -cu src/ && eslint 'src/**/*.ts'",
         "fix": "prettier -w src/ && eslint 'src/**/*.ts' --fix",
-        "compile": "yarn clean && tsc && yarn lint",
-        "minify": "esbuild dist/*.js --bundle --minify --outfile=dist/index.min.js",
+        "type": "yarn clean && tsc --noEmit && yarn lint",
+        "package": "esbuild src/index.ts --outdir=dist --sourcemap --minify --bundle --format=esm --target=chrome58,firefox57,safari11,edge16",
         "clean": "rm -rf dist",
-        "build": "yarn fix && yarn compile && yarn minify"
+        "build": "yarn fix && yarn type && yarn package"
     }
 }

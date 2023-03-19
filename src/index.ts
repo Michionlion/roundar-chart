@@ -1,9 +1,4 @@
-import {
-  line,
-  curveCardinalClosed,
-  // curveMonotoneX,
-  // curveCatmullRomClosed,
-} from 'd3-shape';
+import {line, curveCardinalClosed} from 'd3-shape';
 
 function polarToX(angle: number, distance: number) {
   return Math.cos(angle - Math.PI / 2) * distance;
@@ -28,7 +23,7 @@ export function noSmoothingPathMaker(points: Array<[number, number]>) {
 }
 
 export function smoothingPathMaker(points: Array<[number, number]>): string {
-  return line().curve(curveCardinalClosed.tension(1.0))(points) || 'error';
+  return line().curve(curveCardinalClosed.tension(0.0))(points) || 'error';
 }
 
 export function createSVGElement(
@@ -106,13 +101,13 @@ function caption(
   return createSVGElement(
     'text',
     {
-      className: 'caption',
-      textAnchor: 'middle',
-      fontSize: fontSize || 2,
-      fontFamily: 'sans-serif',
+      class: 'caption',
+      'text-anchor': 'middle',
+      'font-size': `${fontSize || 8}pt`,
+      'font-family': 'sans-serif',
       x: polarToX(angle, chartRadius * 0.95).toFixed(4),
       y: polarToY(angle, chartRadius * 0.95).toFixed(4),
-      dy: (fontSize || 2) / 2,
+      dy: `${(fontSize || 8) / 2}pt`,
     },
     caption
   );
@@ -134,7 +129,7 @@ const defaults: Options = {
   scales: 3, // show scale circles?
   captions: true, // show captions?
   captionsPosition: 1.2, // where on the axes are the captions?
-  captionFontSize: 2, // font size, in ems
+  captionFontSize: 8, // font size, in pts
   pathMaker: smoothingPathMaker, // shape smoothing function
 };
 
