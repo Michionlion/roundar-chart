@@ -66,7 +66,7 @@
   resize: vertical;
 
   width: 59ch;
-  height: calc(min(65vh, 80vw) - 10px - 16ch);
+  /* height: calc(min(65vh, 80vw) - 10px - 16ch); */
   max-height: calc(min(65vh, 80vw) - 10px);
   min-height: 8ch;
 
