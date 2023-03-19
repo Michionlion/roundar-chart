@@ -21,27 +21,8 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  buildLibrary:
+  build:
     runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-    - name: Setup Node
-      uses: actions/setup-node@v3
-      with:
-        node-version: "16"
-        cache: yarn
-    - name: Install Dependencies
-      run: yarn install
-    - name: Build
-      run: yarn build
-
-  buildDocs:
-    runs-on: ubuntu-latest
-    needs: buildLibrary
-    defaults:
-      run:
-        working-directory: ./docs
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -60,12 +41,18 @@ jobs:
           # If source files changed but packages didn't, rebuild from a prior cache.
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}-
+      - name: Install Library Dependencies
+        run: yarn install
+      - name: Build Library
+        run: yarn build
       - name: Install Dependencies
         run: yarn install
+        working-directory: ./docs
       - name: Build and Export Static HTML
         run: yarn build
+        working-directory: ./docs
       - name: Ensure NextJS resources are used
-        run: touch out/.nojekyll
+        run: touch ./docs/out/.nojekyll
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v1
         with:
@@ -76,7 +63,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    needs: buildDocs
+    needs: build
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
