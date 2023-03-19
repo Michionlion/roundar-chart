@@ -23,7 +23,7 @@ export function noSmoothingPathMaker(points: Array<[number, number]>) {
 }
 
 export function smoothingPathMaker(points: Array<[number, number]>): string {
-  return line().curve(curveCardinalClosed.tension(0.0))(points) || 'error';
+  return line().curve(curveCardinalClosed.tension(0.25))(points) || 'error';
 }
 
 export function createSVGElement(
@@ -48,31 +48,25 @@ export function createSVGElement(
   return el;
 }
 
-function axis(chartRadius: number, angle: number) {
-  return createSVGElement('polyline', {
-    class: 'axis',
-    points: points([
-      [0, 0],
-      [polarToX(angle, chartRadius), polarToY(angle, chartRadius)],
-    ]),
-  });
-}
-
 function shape(
-  dataset: {[key: string]: number},
+  data: {[key: string]: number | string},
   chartRadius: number,
   columns: Array<{key: string; angle: number}>,
   pathMaker: (points: Array<[number, number]>) => string
 ): SVGElement {
   return createSVGElement('path', {
-    class: 'shape',
+    ...data,
+    class: data.class ? `${data.class} shape` : `shape`,
+    fill: data.fill || data.stroke || 'black',
+    stroke: data.stroke || data.fill || 'black',
+    'fill-opacity': data['fill-opacity'] || 0.3,
+    'stroke-width': data['stroke-width'] || 0.4,
     d: pathMaker(
       columns.map((column: {key: string; angle: number}) => {
-        const val = dataset[column.key];
-        if ('number' !== typeof val || val < 0 || val > 1) {
-          throw new Error(`Data set ${JSON.stringify(dataset)} is invalid.`);
+        const val = Number(data[column.key]);
+        if (isNaN(val) || val < 0 || val > 1) {
+          throw new Error(`Data set ${JSON.stringify(data)} is invalid.`);
         }
-
         return [
           polarToX(column.angle, val * chartRadius),
           polarToY(column.angle, val * chartRadius),
@@ -82,10 +76,24 @@ function shape(
   });
 }
 
+function axis(chartRadius: number, angle: number) {
+  return createSVGElement('polyline', {
+    class: 'axis',
+    stroke: 'black',
+    'stroke-width': 0.25,
+    points: points([
+      [0, 0],
+      [polarToX(angle, chartRadius), polarToY(angle, chartRadius)],
+    ]),
+  });
+}
+
 function scale(chartRadius: number, value: number) {
   return createSVGElement('circle', {
     class: 'scale',
     fill: 'none',
+    stroke: 'black',
+    'stroke-width': 0.1,
     cx: 0,
     cy: 0,
     r: value * chartRadius,
@@ -96,6 +104,7 @@ function caption(
   caption: string,
   chartRadius: number,
   angle: number,
+  captionPosition: number,
   fontSize: number
 ) {
   return createSVGElement(
@@ -103,11 +112,12 @@ function caption(
     {
       class: 'caption',
       'text-anchor': 'middle',
-      'font-size': `${fontSize || 8}pt`,
+      'font-size': fontSize || 2,
       'font-family': 'sans-serif',
-      x: polarToX(angle, chartRadius * 0.95).toFixed(4),
-      y: polarToY(angle, chartRadius * 0.95).toFixed(4),
-      dy: `${(fontSize || 8) / 2}pt`,
+      'font-weight': 'normal',
+      x: polarToX(angle, chartRadius * captionPosition).toFixed(4),
+      y: polarToY(angle, chartRadius * captionPosition).toFixed(4),
+      dy: (fontSize || 2) / 2,
     },
     caption
   );
@@ -119,6 +129,7 @@ export interface Options {
   scales: number;
   captions: boolean;
   captionsPosition: number;
+  padding: number;
   captionFontSize: number;
   pathMaker: (points: Array<[number, number]>) => string;
 }
@@ -128,29 +139,39 @@ const defaults: Options = {
   axes: true, // show axes?
   scales: 3, // show scale circles?
   captions: true, // show captions?
-  captionsPosition: 1.2, // where on the axes are the captions?
-  captionFontSize: 8, // font size, in pts
+  captionsPosition: 1.05, // where on the axes are the captions?
+  padding: 5, // the padding around the chart in svg units
+  captionFontSize: 2, // font size in ems
   pathMaker: smoothingPathMaker, // shape smoothing function
 };
 
 /**
- * Render a radar chart
+ * Render a radar chart.
+ *
+ * Your data can include attributes which will be set on each shape,
+ * as well as the shape parameters; for instance, you can include a
+ * `class` property to set the CSS class of each shape.
  *
  * @export
  * @param {{ [key: string]: string }} axes a map from column key to column caption
- * @param {{ [key: string]: number }} dataset a map from column key to value (between 0 and 1)
+ * @param {Array<{ [key: string]: number }>} dataset a list of objects, each a map from column key to value (between 0 and 1)
  * @param {Options} [opt=defaults] options for the chart
  * @return {SVGElement} a <g> element containing the chart
  */
 export default function roundar(
   axes: {[key: string]: string},
-  dataset: {[key: string]: number},
+  dataset: Array<{[key: string]: number | string}>,
   opt: Options = defaults
 ): SVGElement {
+  if (!Array.isArray(dataset)) {
+    throw new Error('Dataset must be an array.');
+  }
   opt = Object.assign({}, defaults, opt);
 
-  const chartSize = opt.size / opt.captionsPosition;
+  const chartSize = opt.size / opt.captionsPosition - opt.padding * 2;
   const chartRadius = chartSize / 2;
+
+  // TODO: special case handling for 1 and 2 axes
 
   const columns = Object.keys(axes).map((key, i, all) => ({
     key: key,
@@ -158,16 +179,23 @@ export default function roundar(
     angle: (Math.PI * 2 * i) / all.length,
   }));
 
-  const groups: Array<SVGElement> = [
-    shape(dataset, chartRadius, columns, opt.pathMaker),
-  ];
+  const groups: Array<SVGElement> = dataset.map((data) =>
+    shape(data, chartRadius, columns, opt.pathMaker)
+  );
+
   if (opt.captions) {
     groups.push(
       createSVGElement(
         'g',
         {class: 'captions'},
         ...columns.map((col) =>
-          caption(col.caption, chartRadius, col.angle, opt.captionFontSize)
+          caption(
+            col.caption,
+            chartRadius,
+            col.angle,
+            opt.captionsPosition,
+            opt.captionFontSize
+          )
         )
       )
     );

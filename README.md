@@ -1,8 +1,8 @@
-# Roundar -- Rounded Radar Charts
+# Roundar &mdash; Rounded Radar Charts
 
 **Generate SVG radar charts.**
 
-This library is inspired by [svg-radar-chart](https://github.com/derhuerst/svg-radar-chart). It uses a similar implementation philosophy, but in Typescript and using browser DOM manipulation to build the SVG element. It's designed for use in frontend components to easily generate a `<g>` for use in any `<svg>` element you may want. It weighs `6.9k` and requires no outside dependencies.
+This library is inspired by [svg-radar-chart](https://github.com/derhuerst/svg-radar-chart). It uses a similar implementation philosophy, but in Typescript and using browser DOM manipulation to build the SVG element. It's designed for use in frontend components to easily generate a `<g>` for use in any `<svg>` element you may want. It weighs `7.7k` and requires no outside dependencies.
 
 ## Installing
 
@@ -40,16 +40,16 @@ const svgElement = `
 <svg version="1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
  <style>
   .axis {
-   stroke-width: .2;
+   stroke-width: 0.2;
   }
   .scale {
-   stroke-width: .2;
+   stroke-width: 0.2;
   }
   .shape {
-   fill-opacity: .3;
+   fill-opacity: 0.33;
   }
   .shape:hover {
-   fill-opacity: .6;
+   fill-opacity: 0.67;
   }
  </style>
  ${chart.outerHTML}
@@ -64,14 +64,14 @@ const svgElement = `
 ```typescript
 function roundar(
   axes: {[key: string]: string},
-  dataset: {[key: string]: number},
+  dataset: Array<{[key: string]: number | string}>,
   opt: Options = defaults
 ): SVGElement
 ```
 
 `axes` must be an object mapping keys to string values. The keys are column identifiers, values are captions.
 
-`dataset` must be an object of data points. The keys must match column identifiers from `axes`.
+`dataset` must be a list of data points. Each data point must be an object with keys that must match column identifiers from `axes`. Any extra keys in that object are added as attributes to the shape's `<path>` element.
 
 `opt` is an optional options object and has the following default values:
 
@@ -81,8 +81,9 @@ const defaults: Options = {
   axes: true, // show axes?
   scales: 3, // show scale circles?
   captions: true, // show captions?
-  captionsPosition: 1.2, // where on the axes are the captions?
-  captionFontSize: 2, // font size, in ems
+  captionsPosition: 1.05, // where on the axes are the captions?
+  padding: 5, // the padding around the chart in svg units
+  captionFontSize: 2, // font size in ems
   pathMaker: smoothingPathMaker, // shape smoothing function
 };
 ```
