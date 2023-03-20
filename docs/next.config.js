@@ -1,12 +1,18 @@
+let repo = 'roundar-chart';
+let assetPrefix = `/${repo}/`;
+let basePath = `/${repo}`;
 
-const repo = 'roundar-chart';
+if (process.env.NODE_ENV == "development") {
+  assetPrefix = '';
+  basePath = '';
+}
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   output: 'export',
-  assetPrefix: `/${repo}/`,
-  basePath: `/${repo}`,
+  assetPrefix,
+  basePath,
   images: {
     unoptimized: true,
   }
