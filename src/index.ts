@@ -23,7 +23,7 @@ export function noSmoothingPathMaker(points: Array<[number, number]>) {
 }
 
 export function smoothingPathMaker(points: Array<[number, number]>): string {
-  return line().curve(curveCardinalClosed.tension(0.25))(points) || 'error';
+  return line().curve(curveCardinalClosed.tension(0.15))(points) || 'error';
 }
 
 export function createSVGElement(
@@ -88,9 +88,9 @@ function axis(chartRadius: number, angle: number) {
   });
 }
 
-function scale(chartRadius: number, value: number) {
+function scale(chartRadius: number, value: number, index: number) {
   return createSVGElement('circle', {
-    class: 'scale',
+    class: `scale scale-${index}`,
     fill: 'none',
     stroke: 'black',
     'stroke-width': 0.1,
@@ -223,7 +223,7 @@ export default function roundar(
   if (opt.scales > 0) {
     const scales: Array<SVGElement> = [];
     for (let i = opt.scales; i > 0; i--) {
-      scales.push(scale(chartRadius, i / opt.scales));
+      scales.push(scale(chartRadius, i / opt.scales, i));
     }
     groups.unshift(createSVGElement('g', {class: 'scales'}, ...scales));
   }
