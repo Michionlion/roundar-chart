@@ -23,12 +23,19 @@ const chart = roundar(
     design: 'Design',
     useful: 'Usefulness'
   },
-  {
-    // data (between 0.0 and 1.0)
-    battery: 0.7,
-    design: 0.9,
-    useful: 0.4
-  }
+  [
+    {
+      // data (between 0.0 and 1.0)
+      battery: 0.7,
+      design: 0.9,
+      useful: 0.4
+    },
+    {
+      battery: 0.4,
+      design: 0.6,
+      useful: 0.8
+    }
+  ]
 )
 
 const svg = document.getElementById("#svg-chart");
