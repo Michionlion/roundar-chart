@@ -6,6 +6,8 @@ This library uses Typescript (compiled to Javascript), [`d3-shape`](https://gith
 It's designed for use in frontend interfaces to easily generate a `<g>` for insertion into any `<svg>` element you may want.
 It weighs `7.7k` and requires no outside dependencies.
 
+**Check [the example website](https://michionlion.github.io/roundar-chart/) for an interactive chart example.**
+
 ## Installing
 
 ```shell
@@ -65,8 +67,6 @@ const svgElement = `
 </svg>
 `;
 ```
-
-**Check [the example website](https://michionlion.github.io/roundar-chart/) for an interactive chart example.**
 
 ## API
 
