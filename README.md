@@ -2,7 +2,11 @@
 
 **Generate SVG radar charts.**
 
-This library is inspired by [svg-radar-chart](https://github.com/derhuerst/svg-radar-chart). It uses a similar implementation philosophy, but in Typescript and using browser DOM manipulation to build the SVG element. It's designed for use in frontend components to easily generate a `<g>` for use in any `<svg>` element you may want. It weighs `7.7k` and requires no outside dependencies.
+This library uses Typescript (compiled to Javascript), [`d3-shape`](https://github.com/d3/d3-shape) (bundled), and browser DOM manipulation to build an SVG element depicting a radar chart with rounded data shapes.
+It's designed for use in frontend interfaces to easily generate a `<g>` for insertion into any `<svg>` element you may want.
+It weighs `7.7k` and requires no outside dependencies.
+
+**Check [the example website](https://michionlion.github.io/roundar-chart/) for an interactive chart example.**
 
 ## Installing
 
@@ -23,12 +27,19 @@ const chart = roundar(
     design: 'Design',
     useful: 'Usefulness'
   },
-  {
-    // data (between 0.0 and 1.0)
-    battery: 0.7,
-    design: 0.9,
-    useful: 0.4
-  }
+  [
+    {
+      // data (between 0.0 and 1.0)
+      battery: 0.7,
+      design: 0.9,
+      useful: 0.4
+    },
+    {
+      battery: 0.4,
+      design: 0.6,
+      useful: 0.8
+    }
+  ]
 )
 
 const svg = document.getElementById("#svg-chart");
@@ -56,8 +67,6 @@ const svgElement = `
 </svg>
 `;
 ```
-
-**Check [the documentation](https://michionlion.github.io/roundar-chart/) for an interactive chart example.**
 
 ## API
 
@@ -88,7 +97,9 @@ const defaults = {
 };
 ```
 
-The function for `pathMaker` must match the signature `(points: Array<[number, number]>) => string` and must return [valid SVG `<path>` commands](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/d). It will be inserted into the `d` attribute of a `<path>` SVGPathElement.
+The function for `pathMaker` must match the signature `(points: Array<[number, number]>) => string` and must return [valid SVG `<path>` commands](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/d).
+The returned result will be inserted into the `d` attribute of each dataset's `<path>` SVGPathElement.
+Changing `pathMaker` allows you to specify your own shape smoothing (or non-smoothing) function.
 
 ## Contributing
 
