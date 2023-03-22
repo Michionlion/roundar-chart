@@ -1,10 +1,9 @@
 # Roundar &mdash; Rounded Radar Charts
 
-**Generate SVG radar charts.**
+[![](https://img.shields.io/npm/v/roundar-chart)](https://www.npmjs.com/package/roundar-chart) ![](https://img.shields.io/bundlephobia/minzip/roundar-chart?label=size)
 
 This library uses Typescript (compiled to Javascript), [`d3-shape`](https://github.com/d3/d3-shape) (bundled), and browser DOM manipulation to build an SVG element depicting a radar chart with rounded data shapes.
 It's designed for use in frontend interfaces to easily generate a `<g>` for insertion into any `<svg>` element you may want.
-It weighs `7.7k` and requires no outside dependencies.
 
 **Check [the example website](https://michionlion.github.io/roundar-chart/) for an interactive chart example.**
 
