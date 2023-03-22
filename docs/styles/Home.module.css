@@ -36,6 +36,13 @@
   font-size: 9pt;
 }
 
+.githubLink {
+  width: 64px;
+  height: 64px;
+  display: grid;
+  margin: 6px;
+}
+
 .main {
   display: flex;
   flex-wrap: wrap;
@@ -79,17 +86,20 @@
 }
 
 .footer {
-  position: absolute;
-  bottom: 0;
-  right: 0;
   margin: 1rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.footer a {
+.iconLink {
   cursor: pointer;
+  align-self: center;
+  justify-self: center;
 }
 
-.footer svg {
+.icon {
   width: 2rem;
   height: 2rem;
   fill: black;
@@ -99,7 +109,7 @@
   transition-property: margin-bottom;
 }
 
-.footer svg:hover {
+.icon:hover {
   fill: rgb(26, 26, 26);
   margin-bottom: 0.125rem;
   background-color: rgba(25, 175, 255, 0.15);
