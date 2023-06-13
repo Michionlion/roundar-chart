@@ -4,8 +4,8 @@
     "strict": true,
     "target": "es2015",
     "declaration": true,
-    "outDir": "./dist"
+    "outDir": "src/js"
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "src/js"]
 }
