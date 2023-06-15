@@ -110,12 +110,6 @@ function label(
   angle: number,
   fontSize: number
 ) {
-  console.log(
-    `label ${text} with anchor: ${angle < Math.PI ? 'start' : 'end'}, angle: ${
-      radiansToDegrees(angle) + 90
-    }`
-  );
-
   return createSVGElement(
     'text',
     {
