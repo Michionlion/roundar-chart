@@ -71,10 +71,11 @@ chart.replaceChildren(
       size: 100, // size of the chart
       axes: true, // display axes
       scales: 10, // how many scale marks
-      captions: true, // display captions
-      captionsPosition: 1.025, // where the captions are
-      padding: 10, // the padding around the chart in svg units
-      captionFontSize: 3.0, // font size in ems
+      labels: true, // display labels
+      padding: 15, // the padding around the chart in svg units
+      labelFontSize: 2.75, // font size in ems
+      dx: -2, // horizontal offset of chart
+      dy: 8, // vertical offset of chart
     }
   )
 );
@@ -91,7 +92,7 @@ style.innerText = \`
   .shape {
     fill-opacity: 0.2;
   }
-  .caption {
+  .label {
     text-shadow: 1px 1px 1px white;
     cursor: default;
   }
@@ -147,7 +148,7 @@ style.innerText = \`
           size: 100,
           axes: true,
           scales: 0,
-          captions: false,
+          labels: false,
           padding: 0,
         }
       )

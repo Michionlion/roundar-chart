@@ -85,13 +85,14 @@ function roundar(
 
 ```typescript
 const defaults = {
-  size: 100, // size of the chart (including captions)
+  size: 100, // size of the chart (including labels)
   axes: true, // show axes?
   scales: 3, // show scale circles?
-  captions: true, // show captions?
-  captionsPosition: 1.05, // where on the axes are the captions?
+  labels: true, // show labels?
   padding: 5, // the padding around the chart in svg units
-  captionFontSize: 2, // font size in ems
+  labelFontSize: 2, // font size in ems
+  dx: 0, // offset of chart on x-axis
+  dy: 0, // offset of chart on y-axis
   pathMaker: smoothingPathMaker, // shape smoothing function
 };
 ```
