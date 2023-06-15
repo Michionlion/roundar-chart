@@ -8,6 +8,10 @@ function polarToY(angle: number, distance: number) {
   return Math.sin(angle - Math.PI / 2) * distance;
 }
 
+function radiansToDegrees(radians: number) {
+  return radians * (180 / Math.PI);
+}
+
 function points(points: Array<[number, number]>) {
   return points
     .map((point) => point[0].toFixed(4) + ',' + point[1].toFixed(4))
@@ -100,26 +104,36 @@ function scale(chartRadius: number, value: number, index: number) {
   });
 }
 
-function caption(
-  caption: string,
+function label(
+  text: string,
   chartRadius: number,
   angle: number,
-  captionPosition: number,
   fontSize: number
 ) {
+  console.log(
+    `label ${text} with anchor: ${angle < Math.PI ? 'start' : 'end'}, angle: ${
+      radiansToDegrees(angle) + 90
+    }`
+  );
+
   return createSVGElement(
     'text',
     {
-      class: 'caption',
-      'text-anchor': 'middle',
+      class: 'label',
+      'text-anchor': angle < Math.PI ? 'start' : 'end',
       'font-size': fontSize || 2,
       'font-family': 'sans-serif',
       'font-weight': 'normal',
-      x: polarToX(angle, chartRadius * captionPosition).toFixed(4),
-      y: polarToY(angle, chartRadius * captionPosition).toFixed(4),
-      dy: (fontSize || 2) / 2,
+      transform: `translate(${polarToX(angle, chartRadius)}, ${polarToY(
+        angle,
+        chartRadius
+      )}) rotate(${
+        radiansToDegrees(angle) + 90 + (angle < Math.PI ? 180 : 0)
+      })`,
+      dy: (fontSize || 2) / 3,
+      dx: angle < Math.PI ? '0.02rem' : '-0.02rem',
     },
-    caption
+    text
   );
 }
 
@@ -127,10 +141,11 @@ export interface Options {
   size?: number;
   axes?: boolean;
   scales?: number;
-  captions?: boolean;
-  captionsPosition?: number;
+  labels?: boolean;
   padding?: number;
-  captionFontSize?: number;
+  labelFontSize?: number;
+  dx?: number;
+  dy?: number;
   pathMaker?: (points: Array<[number, number]>) => string;
 }
 
@@ -138,21 +153,23 @@ interface DefaultedOptions {
   size: number;
   axes: boolean;
   scales: number;
-  captions: boolean;
-  captionsPosition: number;
+  labels: boolean;
   padding: number;
-  captionFontSize: number;
+  labelFontSize: number;
+  dx: number;
+  dy: number;
   pathMaker: (points: Array<[number, number]>) => string;
 }
 
 const defaults: DefaultedOptions = {
-  size: 100, // size of the chart (including captions)
+  size: 100, // size of the chart (including labels)
   axes: true, // show axes?
   scales: 3, // show scale circles?
-  captions: true, // show captions?
-  captionsPosition: 1.05, // where on the axes are the captions?
+  labels: true, // show labels?
   padding: 5, // the padding around the chart in svg units
-  captionFontSize: 2, // font size in ems
+  labelFontSize: 2, // font size in ems
+  dx: 0, // offset of chart on x-axis
+  dy: 0, // offset of chart on y-axis
   pathMaker: smoothingPathMaker, // shape smoothing function
 };
 
@@ -164,7 +181,7 @@ const defaults: DefaultedOptions = {
  * `class` property to set the CSS class of each shape.
  *
  * @export
- * @param {{ [key: string]: string }} axes a map from column key to column caption
+ * @param {{ [key: string]: string }} axes a map from column key to column label
  * @param {Array<{ [key: string]: number }>} dataset a list of objects, each a map from column key to value (between 0 and 1)
  * @param {Options} [options=defaults] options for the chart
  * @return {SVGElement} a <g> element containing the chart
@@ -179,14 +196,14 @@ export default function roundar(
   }
   const opt = Object.assign({}, defaults, options) as DefaultedOptions;
 
-  const chartSize = opt.size / opt.captionsPosition - opt.padding * 2;
+  const chartSize = opt.size - opt.padding * 2;
   const chartRadius = chartSize / 2;
 
   // TODO: special case handling for 1 and 2 axes
 
   const columns = Object.keys(axes).map((key, i, all) => ({
     key: key,
-    caption: axes[key],
+    label: axes[key],
     angle: (Math.PI * 2 * i) / all.length,
   }));
 
@@ -194,19 +211,13 @@ export default function roundar(
     shape(data, chartRadius, columns, opt.pathMaker)
   );
 
-  if (opt.captions) {
+  if (opt.labels) {
     groups.push(
       createSVGElement(
         'g',
-        {class: 'captions'},
+        {class: 'labels'},
         ...columns.map((col) =>
-          caption(
-            col.caption,
-            chartRadius,
-            col.angle,
-            opt.captionsPosition,
-            opt.captionFontSize
-          )
+          label(col.label, chartRadius, col.angle, opt.labelFontSize)
         )
       )
     );
@@ -228,12 +239,13 @@ export default function roundar(
     groups.unshift(createSVGElement('g', {class: 'scales'}, ...scales));
   }
 
-  const delta = (opt.size / 2).toFixed(4);
+  const deltaX = (opt.size / 2 + opt.dx).toFixed(4);
+  const deltaY = (opt.size / 2 + opt.dy).toFixed(4);
   return createSVGElement(
     'g',
     {
       class: 'chart',
-      transform: `translate(${delta},${delta})`,
+      transform: `translate(${deltaX},${deltaY})`,
     },
     ...groups
   );
